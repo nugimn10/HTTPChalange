@@ -16,28 +16,25 @@ namespace Latihan_async
         public override void Parse(Response response)
         {
             
-            // Loop on all Links
-            foreach (var title_link in response.Css("h3.entry-title a"))
+            
+            foreach (var title_link in response.Css("a.headline__thumb__link"))
             {
-                // Read Link Text
+                
                 string strTitle = title_link.TextContentClean;
-                // Save Result to File
-                Scrape(new ScrapedData() { { "Title", strTitle } }, "Headlines.Jsonl");
+
+
+                string link = title_link.Attributes["href"];
+                string title = title_link.TextContentClean;
+
+                Console.WriteLine($"Title: {title}");
+                Console.WriteLine($"Link: {link}");
+
+
+
             }
-            // Loop On All Links
-            if (response.CssExists("div.prev-post > a[href]"))
-            {
-                // Get Link URL
-                var next_page = response.Css("div.prev-post > a[href]")[0].Attributes["href"];
-                // Scrpae Next URL
-                this.Request(next_page, Parse);
-            }
+
+            
         }
-        public class Movie
-        {
-            public int ID { get; set; }
-            public string Title { get; set; }
-            public string URL { get; set; }
-        }
+        
     }
 }
