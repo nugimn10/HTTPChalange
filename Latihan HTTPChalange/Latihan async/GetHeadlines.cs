@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Configuration;
+using System.Linq;
 using IronWebScraper;
 
 namespace Latihan_async
@@ -9,6 +9,7 @@ namespace Latihan_async
     {
         public override void Init()
         {
+            this.WorkingDirectory = @"C:\Users\Nugi\source\repos\Latihan HTTPChalange\Latihan async";
             this.LoggingLevel = WebScraper.LogLevel.All;
             this.Request("https://www.kompas.com/", Parse);
         }
@@ -21,7 +22,7 @@ namespace Latihan_async
                 // Read Link Text
                 string strTitle = title_link.TextContentClean;
                 // Save Result to File
-                Scrape(new ScrapedData() { { "Title", strTitle } }, "HelloScraper.Jsonl");
+                Scrape(new ScrapedData() { { "Title", strTitle } }, "Headlines.Jsonl");
             }
             // Loop On All Links
             if (response.CssExists("div.prev-post > a[href]"))
@@ -31,6 +32,12 @@ namespace Latihan_async
                 // Scrpae Next URL
                 this.Request(next_page, Parse);
             }
+        }
+        public class Movie
+        {
+            public int ID { get; set; }
+            public string Title { get; set; }
+            public string URL { get; set; }
         }
     }
 }
